@@ -1,4 +1,5 @@
 import time
+import pyautogui
 import pandas as pd
 from logger import logger
 from mouse import clickBtn
@@ -10,8 +11,7 @@ targets = load_images(dir_path='targets/')
 
 def minutes(seconds):
     return seconds*60
-#🍗 Giving chicken to worker
-# 🍴 Check for hungry workers
+
 def checkHungry():
     logger('🍴 Check for hungry workers')
 
@@ -40,14 +40,17 @@ def backHome():
 
     if(len(finished_icon)>0):
         logger("⚒️ Um trabalhador terminou o trabalho")
+
         if(clickBtn(targets['finished-working'])):
-            clickBtn(targets['call-back-home'])
-            
+            clickBtn(targets['call-back-home'])  
+            goToTown()
             time.sleep(1)
             clickBtn(targets['house'])
 
-            #se não tiver cama vazia chamar função buyBed()
-            #se tiver cama vazia chama função restWorker()
+            if(len(positions(targets['regular-bed-avaliable']))==0):
+                buyBed()    
+            
+            restWorker()
 
 def buyBed():
     clickBtn(targets['empty'])
@@ -56,17 +59,17 @@ def buyBed():
 
 def restWorker():
     clickBtn(targets['regular-bed-avaliable'])
-    clickBtn(targets['jacinto-becker'])#aqui posso colocar uma posição fixa de onde o worker aparece ou a flag da raridade
+    clickBtn(targets['jacinto-becker'])#TODO trocar o print para a raridade, ou deixar uma posição fixa da tela
     clickBtn(targets['close-bed'])
+    closeTown()
 
 def goToTown():
-    #ctrl+t 
+    pyautogui.hotkey('ctrl','t')
     time.sleep(1)
-    #https://dev-alpha.worker.town/town
-def closeTown():
-    #ctrl+w
-    time.sleep(1)
+    pyautogui.write('https://dev-alpha.worker.town/town')
 
+def closeTown():
+    pyautogui.hotkey('ctrl','w')
 
 def main():
     
@@ -79,6 +82,8 @@ def main():
         now = time.time()
         if now - last["check_hungry"] > minutes(5):
             last["check_hungry"] = now
+            goToTown()
+            closeTown()
             checkHungry()
             
 if __name__ == '__main__':
