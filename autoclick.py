@@ -31,6 +31,8 @@ def rentHorse():
                 if(len(positions(targets['with-horse']))>0):
                 
                     if(clickBtn(targets['first-rent'])):
+                        if(len(positions(targets['pgx']))>0):
+                            break
                         while True:
                             if(clickBtn(targets['captcha'])):
                                 break
@@ -53,7 +55,7 @@ def rentHorse():
                     break
                 
         pyautogui.hotkey('ctrl','w')
-        horseNumber+=10
+        horseNumber+=c['sum_horse']
 
 def main():
 
