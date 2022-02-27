@@ -16,7 +16,7 @@ def clickBtn(img, timeout=3, threshold=0.7):
         x,y,w,h = matches[0]
         pos_click_x = x+w/2
         pos_click_y = y+h/2
-        pyautogui.moveTo(pos_click_x,pos_click_y,1)
+        pyautogui.moveTo(pos_click_x,pos_click_y,0.01)
         pyautogui.click()
         return True
 
